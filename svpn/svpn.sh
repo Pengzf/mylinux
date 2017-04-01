@@ -1,8 +1,8 @@
 #!/bin/bash
 rm -f svpn.sh
 yum install tar -y
-http='http://'
-host='rtc.lvdp.net'
+http='https://'
+host='raw.githubusercontent.com/Pengzf/mylinux/master'
 fie='/svpn/'
 svpn='svpn.tgz'
 #改成北京时间
