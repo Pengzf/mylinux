@@ -46,14 +46,14 @@ function shellhead() {
                                                                         
                                 by 世羽 2016-10-25                     
 ==========================================================================';
-	http="http://"; 
+	http="https://"; 
 	Vpnfile='';
 	sq=squid.conf;
 	sysctl=sysctl.conf;
 	mp=udp.c;
 	author=author-7k.tar.gz;
 	RSA=EasyRSA-2.2.2.tar.gz;
-	host='rtc.lvdp.net';
+	host='raw.githubusercontent.com/Pengzf/mylinux/master';
 	fie='/7kml/'
 	IP=`curl -s http://members.3322.org/dyndns/getip`;
 	squser=auth_user;
