@@ -1,8 +1,8 @@
 #!/bin/bash
 rm -f ngm.sh
 yum install tar -y
-http='http://'
-host='rtc.lvdp.net'
+http='https://'
+host='raw.githubusercontent.com/Pengzf/mylinux/master'
 fie='/svpn/'
 ngm='ngm.tgz'
 echo
