@@ -1,6 +1,6 @@
 #!/bin/bash
-http='http://'
-host='rtc.lvdp.net'
+http='https://'
+host='raw.githubusercontent.com/Pengzf/mylinux/master'
 fie='/openvpn/'
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
