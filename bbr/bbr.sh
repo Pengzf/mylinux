@@ -1,3 +1,4 @@
-wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh
-chmod +x bbr.sh
-./bbr.sh
+rm -rf bbr.sh
+wget --no-check-certificate https://raw.githubusercontent.com/Pengzf/mylinux/master/bbr/BBR.sh
+chmod +x BBR.sh
+./BBR.sh
