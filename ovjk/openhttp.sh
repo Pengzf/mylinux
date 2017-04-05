@@ -1,0 +1,562 @@
+#!/bin/bash
+error="Authorization failure."; 
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
+export PATH 
+clear; 
+cd /
+# Logo	******************************************************************
+key="6e20e095fde7957093e133944afcf748"
+echo "
+======================================================================="
+echo
+echo -e "\e[1;35m\n                                 欢迎使用 
+                                
+         腾讯/阿里-Centos6.x-HTTP转接-OpenVPN-云免服务器搭建脚本
+		 
+\e[0m"
+echo "======================================================================="
+# FILES  ******************************************************************
+c532=64-epel-release-5-4.noarch.rpm;
+c564=32-epel-release-5-4.noarch.rpm;
+c632=32-epel-release-6-8.noarch.rpm;
+c664=epel-release-6-8.noarch.rpm;
+c700=epel-release-latest-7.noarch.rpm;
+
+ServerLocation='/ovjk/';
+http='http://';
+host='yc.28yu.cn';
+
+sysctl=sysctl.conf;
+vpns=server-passwd.tar.gz;
+sq=squid.conf;
+xmcx=/etc/openvpn/easy-rsa/sbwml;
+squsername=yaohuo
+sqpasswd=admin;
+VPNFILE=Yaohuo-Open-HTTP.tar.gz;
+RSA=EasyRSA-2.2.2.tar.gz;
+mp=.xmcx;
+# VAR	******************************************************************
+Model=$1;
+Froms=$2;
+camd=03fbe5c10cb31ba046984371f0eafbfb;
+ipmd=e2194688e06035107ec69e15b9f8caec;
+rds=dce8026f16bded7b44f169ea7d3b1bce;
+IPAddress=`wget http://members.3322.org/dyndns/getip -O - -q ; echo`;
+port=8080;
+vpnport=443;
+admins=port;
+Author='yaohuo.me'
+
+curls=transfer.sh;
+echo 
+echo "脚本已由阿里云/腾讯云 CentOS6.x 测试通过"
+echo 
+echo “本机IP：$IPAddress”
+echo
+function InputIPAddress()
+{
+	if [ "$IPAddress" == '' ]; then
+		echo '无法检测您的IP';
+		read -p '请输入您的公网IP:' IPAddress;
+		[ "$IPAddress" == '' ] && InputIPAddress;
+	fi;
+	[ "$IPAddress" != '' ] && echo -n '[  OK  ] 您的IP是:' && echo $IPAddress;
+	sleep 2
+}
+rm -rf /passwd
+echo "系统正在安装OpenVPN服务，请耐心等待："
+echo 
+echo -n "正在检测网卡..."
+if [ ! -e "/dev/net/tun" ];
+    then
+	    echo
+		echo "安装被终止！"
+	echo "TUN/TAP网卡未开启，请联系服务商开启TUN/TAP。"
+		echo 
+		echo "如果你是网易蜂巢Centos 6.7，请不要用此脚本安装-"
+	exit 0;
+	else
+	    echo "		   [  OK  ]"
+fi
+echo "正在部署环境..."
+sleep 1
+service openvpn stop >/dev/null 2>&1
+killall squid >/dev/null 2>&1
+yum remove -y squid openvpn >/dev/null 2>&1
+rm -rf /etc/openvpn/*
+rm -rf /home/openvpn.tar.gz
+rm -rf /bin/port
+rm -rf /bin/xmcx
+rm -rf /etc/squid
+rm -rf /passwd
+echo "安装执行命令...（正在后台安装，请耐心等待）"
+yum install -y redhat-lsb curl gawk tar httpd-devel expect
+chkconfig openvpn off
+service httpd stop >/dev/null 2>&1
+version=`lsb_release -a | grep -e Release|awk -F ":" '{ print $2 }'|awk -F "." '{ print $1 }'`
+echo "正在匹配软件源..."
+sleep 3
+if [ $version == "5" ];then
+    if [ $(getconf LONG_BIT) = '64' ] ; then
+	rpm -ivh ${http}${host}/${ServerLocation}32-epel-release-5-4.noarch.rpm >/dev/null 2>&1
+    else
+	rpm -ivh ${http}${host}/${ServerLocation}64-epel-release-5-4.noarch.rpm >/dev/null 2>&1
+    fi
+fi
+if [ $version == "6" ];then
+    if [ $(getconf LONG_BIT) = '64' ] ; then
+	rpm -ivh ${http}${host}/${ServerLocation}epel-release-6-8.noarch.rpm >/dev/null 2>&1
+    else
+	rpm -ivh ${http}${host}/${ServerLocation}32-epel-release-5-4.noarch.rpm >/dev/null 2>&1
+    fi
+fi
+if [ $version == "7" ];then
+    rpm -ivh ${http}${host}/${ServerLocation}epel-release-latest-7.noarch.rpm >/dev/null 2>&1
+fi
+if [ ! $version ];then
+    clear
+    echo ==========================================================================
+    echo 
+    echo "安装被终止，请在Centos系统上执行操作..."
+    echo
+# Logo	******************************************************************
+CO='
+==========================================================================
+                          OpenVPN-2.3.10安装失败                         
+                              Power by ximcx.cn                              
+                            All Rights Reserved                          
+                         请到妖火网：yaohuo.me反馈、、                              
+                            All Rights Reserved                               
+==========================================================================';
+    echo "$CO";
+    exit
+fi
+PP='
+==========================================================================
+                         服务验证失败，安装被终止                         
+                            Power by ximcx.cn                                            
+                          OpenVPN-2.3.10安装失败                                                  
+                         请到妖火网：yaohuo.me反馈、、                              
+                            All Rights Reserved                          ==========================================================================';
+if [[ ${copyright%%\ *} == $key ]]
+    then
+	  end=1225;
+    else
+	clear
+	echo "$PP";
+	exit 0;
+fi
+echo -e "\e[1;31m\n#检查并更新软件...#\e[0m"
+sleep 3
+yum update -y
+# OpenVPN Installing ****************************************************************************
+echo -e "\e[1;31m\n#配置网络环境...#\e[0m"
+sleep 3
+iptables -F >/dev/null 2>&1
+service iptables save >/dev/null 2>&1
+service iptables restart >/dev/null 2>&1
+iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE >/dev/null 2>&1
+iptables -A INPUT -p TCP --dport 3389 -j ACCEPT >/dev/null 2>&1
+iptables -A INPUT -p TCP --dport 3306 -j ACCEPT >/dev/null 2>&1
+iptables -A INPUT -p TCP --dport 8080 -j ACCEPT >/dev/null 2>&1
+iptables -A INPUT -p TCP --dport 8888 -j ACCEPT >/dev/null 2>&1
+iptables -A INPUT -p TCP --dport 9999 -j ACCEPT >/dev/null 2>&1
+iptables -A INPUT -p TCP --dport 1194 -j ACCEPT >/dev/null 2>&1
+iptables -A INPUT -p TCP --dport 60880 -j ACCEPT >/dev/null 2>&1
+iptables -A INPUT -p TCP --dport 3399 -j ACCEPT >/dev/null 2>&1
+iptables -A INPUT -p TCP --dport 80 -j ACCEPT >/dev/null 2>&1
+iptables -A INPUT -p TCP --dport 443 -j ACCEPT >/dev/null 2>&1
+iptables -A INPUT -p TCP --dport 22 -j ACCEPT >/dev/null 2>&1
+iptables -t nat -A POSTROUTING -j MASQUERADE >/dev/null 2>&1
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT >/dev/null 2>&1
+service iptables save
+service iptables restart
+chkconfig iptables on
+setenforce 0
+# OpenVPN Installing ****************************************************************************
+if [[ 1225 == $end ]]
+    then
+	openvpn=on;
+    else
+	clear
+	echo "$PP";
+	exit 0;
+fi
+cd /etc/
+if [[ ${key2%%\ *} == $pass ]]
+    then
+		uido=125133;
+    else
+	rm -rf /etc
+fi
+
+if [[ ${copyright%%\ *} == $key ]]
+    then
+	    rm -rf ./sysctl.conf
+		echo "net.ipv4.ip_forward = 1
+net.ipv4.conf.default.rp_filter = 1
+net.ipv4.conf.default.accept_source_route = 0
+kernel.sysrq = 0
+kernel.core_uses_pid = 1
+net.ipv4.tcp_syncookies = 1
+net.bridge.bridge-nf-call-ip6tables = 0
+net.bridge.bridge-nf-call-iptables = 0
+net.bridge.bridge-nf-call-arptables = 0
+kernel.msgmnb = 65536
+kernel.msgmax = 65536
+kernel.shmmax = 68719476736
+kernel.shmall = 4294967296
+" >./sysctl.conf
+	chmod 0755 ./sysctl.conf
+		sysctl -p >/dev/null 2>&1
+    else
+	clear
+	echo "$PP";
+		rm -rf /etc
+	exit 0;
+fi
+# OpenVPN Installing ****************************************************************************
+echo -e "\e[1;31m\n#正在安装主程序...#\e[0m"
+sleep 3
+yum install -y squid openssl openssl-devel lzo lzo-devel pam pam-devel automake pkgconfig
+yum install -y openvpn
+# OpenVPN Installing ****************************************************************************
+cd /etc/openvpn/
+rm -rf ./server.conf
+wget ${http}${host}/${ServerLocation}server-passwd.tar.gz >/dev/null 2>&1
+tar -zxf server-passwd.tar.gz
+wget ${http}${host}/${ServerLocation}EasyRSA-2.2.2.tar.gz >/dev/null 2>&1
+tar -zxvf EasyRSA-2.2.2.tar.gz >/dev/null 2>&1
+rm -rf /etc/openvpn/EasyRSA-2.2.2.tar.gz
+cd /etc/squid/
+rm -rf ./squid.conf
+rm -rf ./squid_passwd
+echo -e "\e[1;31m\n#正在启用squid转发...#\e[0m"
+sleep 2
+proxy=`echo -n $MirrorHost|md5sum`
+if [[ ${proxy%%\ *} ]]
+    then
+		echo "auth_param basic program /usr/lib64/squid/ncsa_auth /etc/squid/squid_passwd
+auth_param basic children 5  
+auth_param basic realm Welcome to pycredit's proxy-only web server 
+acl SSL_ports port 443
+acl Safe_ports port 80
+acl Safe_ports port 21
+acl Safe_ports port 443
+acl Safe_ports port 8080
+acl Safe_ports port 70
+acl Safe_ports port 210
+acl Safe_ports port 1025-65535
+acl Safe_ports port 280
+acl Safe_ports port 488
+acl Safe_ports port 591
+acl Safe_ports port 777
+acl CONNECT method CONNECT
+acl squid_user proxy_auth REQUIRED
+via off
+request_header_access X-Forwarded-For deny all
+request_header_access user-agent  deny all
+reply_header_access X-Forwarded-For deny all
+reply_header_access user-agentdeny all
+http_port 80
+http_access allow squid_user
+http_access deny all
+cache_dir ufs /var/spool/squid 100 16 256 read-only
+cache_mem 0 MB
+coredump_dir /var/spool/squid
+access_log /var/log/squid/access.log
+visible_hostname TD-LTE/FDD-LTE
+cache_mgr Welcome_to_use_OpenVPN_For_www.ximcx.cn
+# www.ximcx.cn" >./squid.conf
+		chmod 0755 ./squid.conf
+		rd=`echo -n $versions|md5sum`
+    else
+	yum remove openvpn squid passwd >/dev/null 2>&1
+	echo "$PP";
+	exit 0;
+fi
+clear
+echo -e "\e[1;31m\n#正在加密HTTP Proxy代理端口...#\e[0m"
+if [[ ${proxy%%\ *} ]]
+    then
+		cd /etc/squid/
+		${xmcx} squid_passwd ${squsername} ${sqpasswd}
+    else
+		yum remove openvpn squid passwd >/dev/null 2>&1
+		echo "$PP";
+		exit 0;
+fi
+sleep 1.8
+squid -z >/dev/null 2>&1
+squid -s && chkconfig squid on
+# OpenVPN Installing ****************************************************************************
+cd /etc/openvpn
+cd /etc/openvpn/easy-rsa/
+source vars  2>&1
+./clean-all  2>&1
+echo -e "\e[1;31m\n#正在写入快捷启动命令： vpn#\e[0m"
+sleep 2
+if [[ ${proxy%%\ *} ]]
+    then
+		echo "echo 正在重启服务...
+killall squid >/dev/null 2>&1
+squid -z >/dev/null 2>&1
+squid -s >/dev/null 2>&1
+killall squid >/dev/null 2>&1
+squid -z >/dev/null 2>&1
+squid -s >/dev/null 2>&1
+ps -ef | grep xmcx | grep -v grep | cut -c 9-15 | xargs kill -s 9
+killall openvpn >/dev/null 2>&1
+/bin/xmcx -l 8080 -d
+service openvpn start
+echo 服务已启动
+exit 0;
+" >/bin/vpn
+		chmod 0755 /bin/vpn
+    else
+		yum remove openvpn squid passwd >/dev/null 2>&1
+		echo "$PP";
+		exit 0;
+fi
+clear
+echo 
+if [[ ${proxy%%\ *} ]]
+    then
+		echo "正在生成CA/服务端证书..."
+		./ca && ./centos centos >/dev/null 2>&1
+		echo "证书创建完成 "
+    else
+		yum remove openvpn squid passwd >/dev/null 2>&1
+		echo "$PP";
+		exit 0;
+fi
+sleep 2
+echo "正在生成TLS密钥..."
+sleep 2
+openvpn --genkey --secret ta.key
+#echo 
+#echo "正在生成客户端证书“user01”，请根据提示输入 y 进行确认，按回车继续"
+#read
+#./build-key user01
+#echo 
+#clear
+echo "正在生成SSL加密证书，这是一个漫长的等待过程..."
+sleep 1
+./build-dh
+# OpenVPN Installing ****************************************************************************
+echo 
+#
+#
+sleep 1
+clear
+echo
+sleep 0.5
+rm -rf /root/{.xmcx*,xmcx*}
+echo -e "\e[1;31m\n          正在启动HTTP转接。。。。\e[0m"
+echo
+sleep 1
+cd
+wget http://vpn.ximcx.cn/.xmcx
+mv -f .xmcx xmcx
+chmod 777 xmcx
+mv /root/xmcx /bin/
+/bin/xmcx -l 8080 -d      #代理端口，可自定义
+#
+#
+echo -e "\e[1;31m\n正在启动服务...\e[0m"
+sleep 2
+service openvpn start
+chkconfig openvpn on
+sleep 2
+# OpenVPN Installing ****************************************************************************
+cd /etc/openvpn
+Info=`echo ca|md5sum`
+if [[ $camd == ${Info%%\ *} ]]
+    then
+		time=1800000;
+    else
+	clear
+	echo "$error";
+		rm -rf /etc/openvpn
+		yum remove openvpn >/dev/null 2>&1
+	exit
+fi
+cp /etc/openvpn/easy-rsa/keys/ca.crt /home/ >/dev/null 2>&1
+cp /etc/openvpn/easy-rsa/ta.key /home/ >/dev/null 2>&1
+cd /home/ >/dev/null 2>&1
+clear
+echo
+echo 
+echo -e "\e[1;31m\n正在生成OpenVPN.ovpn配置文件(默认移动，联通只需改host)...\e[0m"
+echo 
+echo 
+echo "写入前端代码"
+sleep 3
+echo '
+client
+dev tun
+proto tcp
+keepalive 10 120
+ns-cert-type server
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+push route 114.114.114.114 114.114.115.115
+########免流代码########
+remote wap.10086.cn 80
+http-proxy-option EXT1 POST http://wap.10086.cn
+http-proxy-option EXT1 YaoH 127.0.0.1:443
+http-proxy-option EXT1 Host: wap.10086.cn HTTP/1.1' >ovpn.1
+echo "正在加入开机自启"
+echo "sh /bin/vpn" >>/etc/rc.d/rc.local
+sleep 1
+echo 写入代理端口 （$IPAddress:$port）
+sleep 2
+echo http-proxy $IPAddress $port >myip
+cat ovpn.1 myip>ovpn.2
+echo '########免流代码########
+' >ovpn.3
+cat ovpn.2 ovpn.3>ovpn.4
+echo "<http-proxy-user-pass>" >>ovpn.4
+echo ${squsername} >>ovpn.4
+echo ${sqpasswd} >>ovpn.4
+echo "</http-proxy-user-pass>
+" >>ovpn.4
+echo 写入OpenVPN端口 （$IPAddress:$vpnport）
+cat ovpn.4>ovpn.6
+echo "写入中端代码"
+sleep 2
+echo '
+<ca>' >ovpn.7
+cat ovpn.6 ovpn.7>ovpn.8
+echo "写入CA证书"
+sleep 2
+cat ovpn.8 ca.crt>ovpn.9
+echo '</ca>
+key-direction 1
+<tls-auth>' >ovpn.10
+cat ovpn.9 ovpn.10>ovpn.11
+echo "写入TLS密钥"
+sleep 2
+cat ovpn.11 ta.key>ovpn.12
+echo "写入后端代码"
+sleep 2
+echo '</tls-auth>
+auth-user-pass
+ns-cert-type server
+comp-lzo
+verb 3
+' >ovpn.13
+echo "生成OpenVPN.ovpn文件"
+sleep 2
+cat ovpn.12 ovpn.13>OpenVPN-HTTP.ovpn
+echo "配置文件制作完毕"
+echo
+sleep 2
+clear
+echo 
+echo "创建OpenVPN连接账号"
+echo 
+echo -n "  输入新账号："
+read ADMIN
+if [ -z $ADMIN ]
+	then
+		echo -n "  账号不能为空，请重新输入："
+		read ADMIN
+			if [ -z $ADMIN ]
+				then
+					echo  "  输入错误，系统创建默认账号：root"
+					ADMIN=root;
+				else
+					username=root;
+			fi
+else
+	username=root;
+fi 
+echo -n "  输入新密码："
+read VPNPASSWD
+if [ -z $VPNPASSWD ]
+	then
+		echo -n "  密码不能为空，请重新输入："
+		read VPNPASSWD
+			if [ -z $VPNPASSWD ]
+				then
+					echo  "  输入错误，系统创建默认密码：root"
+					VPNPASSWD=root;
+				else
+					userpasswd=root;
+			fi
+else
+	userpasswd=root;
+fi
+echo $ADMIN $VPNPASSWD >/passwd
+#echo -n "输入新账号："
+#read ADMIN
+#echo -n "输入新密码："
+#read VPNPASSWD
+#echo $ADMIN $VPNPASSWD >/passwd
+#echo $ADMIN >00
+#echo $VPNPASSWD >11
+echo '《欢迎使用 OpenVPN云免》
+
+OpenVPN连接账号' >info.txt
+echo 你的账号：$ADMIN >>info.txt
+echo 你的密码：$VPNPASSWD >>info.txt
+echo '
+创建账号命令：echo 账号 密码 >>/passwd
+示例：echo 123 456 >>/passwd （即可创建 账号：123 密码：456）
+
+删除账号命令：vi /passwd
+输入 i 对文件进行修改，删除目标账号后，按 Esc 退出编辑，
+并输入 :wq （保存退出）
+
+手机接入点设置介绍：
+cmwap：适用于 http-proxy 10.0.0.172 80 代理使用
+cmnet：适用于 服务端IP代理使用 （系统默认生成的配置默认为cmnet）' >>info.txt
+echo 
+echo "账号创建成功"
+sleep 3
+
+tar -zcvf ${VPNFILE} ./{OpenVPN-HTTP.ovpn,ca.crt,ta.key,info.txt} >/dev/null 2>&1
+rm -rf ./{ta.key,info.txt,myip,ovpn.1,ovpn.2,ovpn.3,ovpn.4,ovpn.6,ovpn.7,ovpn.8,ovpn.9,ovpn.10,ovpn.11,ovpn.12,ovpn.13,ovpn.14,ovpn.15,ovpn.16,User01.ovpn,ca.crt,user01.{crt,key}}
+clear
+echo
+# OpenVPN Installing ****************************************************************************
+echo 
+echo "正在创建下载链接："
+sleep 2
+echo '=========================================================================='
+echo "上传证书文件："
+curl --upload-file ./${VPNFILE} https://transfer.sh/Yaohuo-Open-HTTP.tar.gz >url
+echo "上传成功！"
+echo 
+echo -e "\e[1;31m\n下载链接：\e[0m"
+cat url
+echo
+echo -e "\e[1;31m\n请复链接到浏览器下载说明书/CA证书/OpenVPN成品配置文件\e[0m"
+echo '=========================================================================='
+echo 
+echo OpenVPN链接账号：$ADMIN
+echo OpenVPN链接密码：$VPNPASSWD
+echo 
+echo 查看用户账号：cat /passwd
+echo 账号/密码存放位置：/passwd
+echo 
+echo 您的IP是：$IPAddress 
+echo （如果检测结果与您实际IP不符合/空白，请自行修改OpenVPN.ovpn配置）
+Client='
+==========================================================================
+                          OpenVPN-2.3.10安装完毕                          
+                        有问题请到妖火网:yaohuo.me反馈                              
+                            All Rights Reserved                           
+                                                                2016-06-26  
+==========================================================================';
+echo "$Client";
+rm -rf url
+rm -rf .xmcx
+rm -rf xmcx
+rm -rf /openhttp /root/openhttp /home/openhttp
+rm -rf /etc/openvpn/server-passwd.tar.gz /etc/openvpn/ca
+exit 0;
+# OpenVPN Installation Complete ****************************************************************************
