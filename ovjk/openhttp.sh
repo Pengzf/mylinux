@@ -23,8 +23,8 @@ c664=epel-release-6-8.noarch.rpm;
 c700=epel-release-latest-7.noarch.rpm;
 
 ServerLocation='/ovjk/';
-http='http://';
-host='yc.28yu.cn';
+http='https://';
+host='raw.githubusercontent.com/Pengzf/mylinux/master';
 
 sysctl=sysctl.conf;
 vpns=server-passwd.tar.gz;
