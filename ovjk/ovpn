@@ -22,13 +22,13 @@ read fuck
 
 case "$fuck" in
     '1')
-        wget http://yc.28yu.cn/ovjk/openhttp.sh && bash openhttp.sh ;;
+        wget https://raw.githubusercontent.com/Pengzf/mylinux/master/ovjk/openhttp.sh && bash openhttp.sh ;;
     '2' )
-        wget http://yc.28yu.cn/ovjk/openvpn.sh && bash openvpn.sh ;;
+        wget https://raw.githubusercontent.com/Pengzf/mylinux/master/ovjk/openvpn.sh && bash openvpn.sh ;;
 	'3' )
-        wget http://yc.28yu.cn/ovjk/ovjk.sh && bash ovjk.sh ;;
+        wget https://raw.githubusercontent.com/Pengzf/mylinux/master/ovjk/ovjk.sh && bash ovjk.sh ;;
 	'4' )
-        wget http://yc.28yu.cn/ovjk/yum.sh -O yum.sh;sh yum.sh ;;
+        wget https://raw.githubusercontent.com/Pengzf/mylinux/master/ovjk/yum.sh -O yum.sh;sh yum.sh ;;
     *)
         echo "输入错误"
 esac
