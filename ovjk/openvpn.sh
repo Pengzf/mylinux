@@ -5,8 +5,8 @@ clear;
 rm -- "$0" 
 rm -f openvpn
 ServerLocation='/ovjk/';
-http='http://';
-host='yc.28yu.cn';
+http='https://';
+host='raw.githubusercontent.com/Pengzf/mylinux/master';
 IPAddress=`wget http://members.3322.org/dyndns/getip -O - -q ; echo`;
 
 #==========================================================================
