@@ -23,4 +23,4 @@ echo -e "\033[31m                      【更新完成】\033[0m"
 echo ""
 echo -e "\033[31m马上开始搭建..........\033[0m"
 sleep 2
-wget http://yc.28yu.cn/ovjk/ovpn && bash ovpn
+wget https://raw.githubusercontent.com/Pengzf/mylinux/master/ovjk/ovpn && bash ovpn
