@@ -1,0 +1,35 @@
+﻿#! /bin/bash
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
+export PATH
+clear;
+rm -- "$0"
+rm -f ovpn
+echo -e "\033[33m=========================================================================\033[0m"
+echo ""
+echo -e "\033[36m                		欢迎使用一键脚本大全\033[0m"
+echo ""
+echo -e "\033[35m                       1.单纯的HTTP转接脚本\033[0m"
+echo ""
+echo -e "\033[35m                       2.常规+HTTP转接+流控脚本(流控+共存模式)\033[0m"
+echo ""
+echo -e "\033[35m                       3.模式共存+流控+实时流控监控脚(测试版有BUG请反馈)\033[0m"
+echo ""
+echo -e "\033[35m                       4.更新Yum源(搭建失败重装系统后选择这个后再安装)\033[0m"
+echo ""
+echo -e "\033[33m==========================================================================\033[0m"
+echo -e "\033[32m请选择安装版本：\033[0m"
+read fuck
+
+case "$fuck" in
+    '1')
+        wget http://yc.28yu.cn/ovjk/openhttp.sh && bash openhttp.sh ;;
+    '2' )
+        wget http://yc.28yu.cn/ovjk/openvpn.sh && bash openvpn.sh ;;
+	'3' )
+        wget http://yc.28yu.cn/ovjk/ovjk.sh && bash ovjk.sh ;;
+	'4' )
+        wget http://yc.28yu.cn/ovjk/yum.sh -O yum.sh;sh yum.sh ;;
+    *)
+        echo "输入错误"
+esac
+
