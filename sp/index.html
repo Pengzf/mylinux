@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<!-- saved from url=(0028)http://www.anytv.vip/vip.php -->
+<html class="js cssanimations"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="本站为广大网友提供优酷VIP解析，爱奇艺VIP解析，腾讯VIP解析，乐视VIP解析，芒果VIP解析等解析服务，让你省去购买视频VIP费用，欢迎大家收藏本站，并将它介绍给您的朋友！">
+    <meta name="keywords" content="VIP,爱奇艺VIP,腾讯视屏VIP">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>VIP视屏破解 - VIP解析 - 无广告在线看电影</title>
+    
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+    
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    
+    <link rel="icon" type="image/png" href="http://www.anytv.vip/assets/i/favicon.png">
+    
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="http://www.anytv.vip/assets/i/app-icon72x72@2x.png">
+    
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI">
+    <link rel="apple-touch-icon-precomposed" href="http://www.anytv.vip/assets/i/app-icon72x72@2x.png">
+    
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="http://www.anytv.vip/assets/i/app-icon72x72@2x.png">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+    
+    <link rel="stylesheet" href="https://cdn.bootcss.com/amazeui/2.7.2/css/amazeui.min.css">
+    <link rel="stylesheet" href="./app.css">
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+    
+    <!--[if lte IE 8 ]>
+    <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+    <script src="http://www.anytv.vip/assets/js/amazeui.ie8polyfill.min.js"></script>
+    <![endif]-->
+
+    
+<link rel="stylesheet" href="./layer.css" id="layuicss-skinlayercss"></head>
+<body class="am-with-fixed-navbar">
+
+<header class="am-topbar">
+    <div class="am-container">
+  </div>
+</header>
+
+
+<style>
+.btn-play-source {
+    margin: 0 5px 5px 0;
+}
+</style>
+
+<div class="am-container">
+
+<div class="am-input-group am-input-group-primary am-margin-bottom">
+    <input id="video-url" type="text" class="am-form-field" placeholder="粘贴原视屏播放链接..." required="">
+    
+    <span class="am-input-group-btn">
+        <button id="btn-vip-play" class="am-btn am-btn-primary" type="submit">
+            <span class="am-icon-play-circle"></span> 破解播放
+        </button>
+    </span>
+</div>
+
+<div class="am-panel am-panel-default">
+    <div class="am-panel-hd">VIP视屏破解</div>
+    
+    <div class="am-panel-bd player-box">
+        <iframe id="vip-player" src="./saved_resource.html" allowtransparency="true" scrolling="No" width="100%" height="100%"></iframe>
+    </div>
+    
+</div>
+
+<div class="am-panel am-panel-default">
+    <div class="am-panel-hd">解析接口</div>
+    <div class="am-panel-bd">
+        如遇播放失败请尝试切换解析接口
+        
+        <div class="am-btn-group">
+            <div class="am-dropdown am-dropdown-up" id="video-api-select" data-am-dropdown="">
+                <button class="am-btn am-btn-default am-btn-sm am-dropdown-toggle" data-am-dropdown-toggle="">
+                    <span id="apiname">切换解析接口</span> 
+                    <span class="am-icon-caret-down am-margin-left-xs"></span>
+                </button>
+                
+                <ul class="am-dropdown-content" id="videoapi">
+                    <li class="am-dropdown-header">切换视屏解析接口</li>
+                    
+                    
+                    <li class="videoapi-item" data-url="https://player.baodai.org/ipsign/player.php?v=" data-name="接口一(默认)">
+                        <a href="javascript:;">接口一(默认)</a>
+                    </li>
+                    <li class="videoapi-item am-active" data-url="http://jx.hanximeng.com/api.php?url=" data-name="智能解析">
+                        <a href="javascript:;">智能解析</a>
+                    </li>
+                    <li class="videoapi-item" data-url="http://www.82190555.com/index/qqvod.php?url=" data-name="接口二">
+                        <a href="javascript:;">接口二</a>
+                    </li>
+                    <li class="videoapi-item" data-url="https://api.47ks.com/webcloud/?v=" data-name="接口三">
+                        <a href="javascript:;">人工精选接口1</a>
+                    </li>
+                    <li class="videoapi-item" data-url="https://api.daidaitv.com/index/?url=" data-name="优酷">
+                        <a href="javascript:;">优酷</a>
+                    </li>
+                    <li class="videoapi-item" data-url="http://v.72du.com/api/?url=" data-name="接口四">
+                        <a href="javascript:;">接口四</a>
+                    </li>
+                    <li class="videoapi-item" data-url="https://api.flvsp.com/?url=" data-name="通用非VIP">
+                        <a href="javascript:;">通用非VIP</a>
+                    </li>
+                    <li class="videoapi-item" data-url="http://api.xfsub.com/index.php?url=" data-name="旋风动漫">
+                        <a href="javascript:;">旋风动漫</a>
+                    </li>
+                    <li class="videoapi-item" data-url="http://api.baiyug.cn/vip/?url=" data-name="接口八(腾讯)">
+                        <a href="javascript:;">接口八(腾讯)</a>
+                    </li>
+                    <li class="videoapi-item" data-url="http://jiexi.92fz.cn/player/vip.php?url=" data-name="通用普清">
+                        <a href="javascript:;">通用普清</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="am-panel am-panel-default">
+    <div class="am-panel-hd">使用说明</div>
+    
+    <div class="am-panel-bd">
+        本工具能破解并播放各大视频网站的 VIP 视频，包括但不限于 爱奇艺、腾讯视屏、优酷、乐视、芒果TV、搜狐、1905。使用方法：
+        
+        <ol>
+            <li>进入各大视频网站，找到想要观看的VIP视频，然后复制链接（浏览器上的视频地址）</li>
+            <li>将复制的链接粘贴到顶部的输入框，并点击“破解播放”</li>
+            <li>等待解析完成，即可免费观看VIP视频</li>
+        </ol>
+        
+        <span class="am-text-warning">免责声明：本站不生产解析接口，本站只做解析接口的搬运工！</span>
+    </div>
+    
+</div>
+
+<script>
+var videoApi = "https://player.baodai.org/ipsign/player.php?v=";
+    var url = window.location.href;
+    if(url.split("u=").length=1){
+    	$("#video-url").val(url.split("u=")[1]);
+    	refreshVideo();
+    }
+
+
+
+$(function() {
+
+    // 显示操作演示 GIF
+    var playerHtml = '<style type="text/css">* {margin: 0; padding: 0;}html, body {width: 100%; height: 100%;}body{display: table;}.img{text-align: center; vertical-align: middle; display: table-cell;}img{width: 100%; max-width: 500px;}</style>';
+    playerHtml += '<div class="img"><img src="https://ws1.sinaimg.cn/large/a15b4afegy1fhduiymjdig20rs0fo0yc.gif"></div>';
+    
+    $("#vip-player").contents().find("body").html(playerHtml);
+    
+    
+    // 切换解析接口
+    $(".videoapi-item").click(function() {
+        $("#videoapi .am-active").removeClass("am-active");
+        $(this).addClass("am-active");
+        
+        // 记录接口地址
+        videoApi = $(this).data("url");
+        
+        // 关闭下拉
+        $("#video-api-select").dropdown("close");
+        
+        // 更新视屏播放
+        refreshVideo();
+        
+        // 改变显示的接口名
+        layer.msg("切换接口为 " + $(this).data("name"));
+    });
+    
+    $("#btn-vip-play").click(function() {
+        refreshVideo();
+    });
+});
+
+// 刷新视屏播放
+function refreshVideo() {
+    var videoUrl = $("#video-url").val();
+    
+    console.log(videoUrl)
+    if(videoUrl == "") {
+        layer.msg("链接不能为空！");
+        return false;
+    }
+    console.log(videoApi + videoUrl)
+    $("#vip-player").attr("src", videoApi + videoUrl);
+    
+}
+</script>
+</div>  <!-- 容器 -->
+ <script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
+
+<script type="text/javascript">
+// url编码
+// 输入参数：待编码的字符串
+function urlEncode(String) {
+    return encodeURIComponent(String).replace(/'/g,"%27").replace(/"/g,"%22");	
+}
+</script>
+<script src="https://cdn.bootcss.com/amazeui/2.7.2/js/amazeui.min.js"></script>
+</body></html>
